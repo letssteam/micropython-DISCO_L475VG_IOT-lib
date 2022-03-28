@@ -33,9 +33,12 @@ jobs:
         cd mpy
         for file in ../*.py
         do
+          echo compiling $file
           mpy-cross $file
         done
+        ls
         cd ..
+        ls mpy
         
     - name: Push to MicroPython Editor
       uses: dmnemec/copy_file_to_another_repo_action@main
