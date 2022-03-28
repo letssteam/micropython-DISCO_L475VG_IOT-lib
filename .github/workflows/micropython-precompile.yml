@@ -33,7 +33,7 @@ jobs:
         for file in *.py
         do
           echo compiling $file
-          mpy-cross -o test/${file%%.*} $file
+          mpy-cross -o mpy/${file%%.*} $file
         done
         ls mpy
         
