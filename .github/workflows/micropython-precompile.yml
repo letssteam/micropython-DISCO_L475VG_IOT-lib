@@ -30,14 +30,11 @@ jobs:
     - name: Running mpy-cross for each file
       run: |
         mkdir mpy
-        cd mpy
-        for file in ../*.py
+        for file in *.py
         do
           echo compiling $file
-          mpy-cross $file
+          mpy-cross -o test/${file%%.*} $file
         done
-        ls
-        cd ..
         ls mpy
         
     - name: Push to MicroPython Editor
