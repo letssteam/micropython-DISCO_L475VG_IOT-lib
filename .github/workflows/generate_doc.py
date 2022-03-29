@@ -1,6 +1,7 @@
 import ast
 import json
 import sys
+import os
 
 files = sys.argv[1:]
 result = {}
@@ -8,6 +9,11 @@ result = {}
 if len(files) == 0:
     print("No file in argument...")
     exit(1)
+
+
+def get_module_name(filename):
+    basename = os.path.basename(filename)
+    return os.path.splitext(basename)[0]
 
 def extract_infos(file):
     with open(file, "r") as f:
@@ -34,7 +40,7 @@ def extract_infos(file):
     return { "variables": res_vars, "classes": res_class }
 
 for file in files:
-    result[file] = extract_infos(file)
+    result[ get_module_name(file) ] = extract_infos(file)
 
 print( json.dumps(result) )
 
