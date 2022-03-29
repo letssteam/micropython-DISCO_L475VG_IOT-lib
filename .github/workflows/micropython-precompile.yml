@@ -10,6 +10,9 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+env:
+  COMPLETION_FILE: completion.json
+  
 jobs:
   build:
 
@@ -36,7 +39,19 @@ jobs:
           mpy-cross -o mpy/${file%%.*}.mpy $file
         done
         
-    - name: Push to MicroPython Editor
+    - name: Generate completion doc
+      run: |
+        res=$(python .github/workflows/generate_doc.py $(ls *.py))
+        if [[ $? -eq 0 ]]
+        then
+          echo $res > $COMPLETION_FILE
+        else
+          echo "Failed to generate completion !" 1>&2
+          echo $res 1>&2
+          exit 1
+        fi
+        
+    - name: Push to MPY to MicroPython Editor
       uses: dmnemec/copy_file_to_another_repo_action@main
       env:
         API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
@@ -44,6 +59,17 @@ jobs:
         source_file: 'mpy/.'
         destination_repo: 'letssteam/micropython-editor-experimental'
         destination_folder: 'static/assets/fat'
+        user_email: 'jjbaudin@gmail.com'
+        user_name: 'Jonathan BAUDIN'
+        
+    - name: Push to Completion to MicroPython Editor
+      uses: dmnemec/copy_file_to_another_repo_action@main
+      env:
+        API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+      with:
+        source_file: ${{ COMPLETION_FILE }}
+        destination_repo: 'letssteam/micropython-editor-experimental'
+        destination_folder: 'static/assets/'
         user_email: 'jjbaudin@gmail.com'
         user_name: 'Jonathan BAUDIN'
       
