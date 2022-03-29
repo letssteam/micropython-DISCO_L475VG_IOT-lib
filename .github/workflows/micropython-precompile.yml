@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
 
 env:
-  COMPLETION_FILE: completion.json
+  COMPLETION_FILE: "completion.json"
   
 jobs:
   build:
