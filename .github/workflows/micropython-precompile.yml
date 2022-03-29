@@ -67,7 +67,7 @@ jobs:
       env:
         API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
       with:
-        source_file: ${{ COMPLETION_FILE }}
+        source_file: ${{ env.COMPLETION_FILE }}
         destination_repo: 'letssteam/micropython-editor-experimental'
         destination_folder: 'static/assets/'
         user_email: 'jjbaudin@gmail.com'
